@@ -12,3 +12,5 @@ export const getData = () => {
         .then(response => response['results'])
         .catch(err => console.error(err));
 }
+
+export const Img_path = "http://image.tmdb.org/t/p/w185"

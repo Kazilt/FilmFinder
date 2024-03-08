@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import {BottomNavigation } from 'react-native-paper';
 import Default from './Default';
 import Home from './components/Home';
+import NaviHome from './NaviHome';
 
 export default function Dashboard() {
     const [index, setIndex] = React.useState(0);
@@ -14,7 +15,7 @@ export default function Dashboard() {
       ]);
     
     const renderScene = BottomNavigation.SceneMap({
-        home: Home,
+        home: NaviHome,
         search: Default,
         liked: Default,
         profile: Default,

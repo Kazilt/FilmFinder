@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity  } from 'react-native';
 import { Text } from 'react-native-paper';
 import { getData } from '../apicalls/apicalls';
 import MovieCard from './MovieCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {useNavigation } from '@react-navigation/native';
 
 export default function Home() {
-
+  
   const [movieL, setMovieL] = useState([])
-
+  const nav = useNavigation()
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData();
@@ -22,11 +23,13 @@ export default function Home() {
     <SafeAreaView style={styles.container}>
       <Text style = {styles.textContent}>Movies showing that you might like:</Text>
       {movieL.length === 0 ? (
-          <Text>Loading...</Text>
+          <Text style = {styles.textContent}>Loading...</Text>
         ) : (
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          {movieL.map((mov, i) => {
-            return <MovieCard movie={mov} key={i} />;
+          {movieL.map((movie, i) => {
+            return (<TouchableOpacity key={i} onPress={() => nav.navigate('MovieDetails', { movie })}>
+            <MovieCard movie={movie} />
+          </TouchableOpacity>);
           })}
         </ScrollView>) 
         }
@@ -39,7 +42,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -53,6 +56,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     padding: 10,
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#FFF'
   }
 });
