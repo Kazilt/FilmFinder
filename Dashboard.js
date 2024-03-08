@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import {BottomNavigation } from 'react-native-paper';
 import Default from './Default';
-import Home from './components/Home';
 import NaviHome from './NaviHome';
 
 export default function Dashboard() {
@@ -14,12 +13,20 @@ export default function Dashboard() {
         { key: 'profile', title: 'P', focusedIcon: 'account-circle', unfocusedIcon: 'account-circle-outline' },
       ]);
     
-    const renderScene = BottomNavigation.SceneMap({
-        home: NaviHome,
-        search: Default,
-        liked: Default,
-        profile: Default,
-      });
+      const renderScene = ({ route }) => {
+        switch (route.key) {
+          case 'home':
+            return <NaviHome type = "Home"/>;
+          case 'search':
+            return <NaviHome type = "Search"/>;
+          case 'liked':
+            return <Default />;
+          case 'profile':
+            return <Default />;
+          default:
+            return null;
+        }
+      };
     
 
     return (

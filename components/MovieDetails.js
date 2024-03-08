@@ -2,13 +2,17 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Img_path } from '../apicalls/apicalls';
+import {useNavigation } from '@react-navigation/native';
 const MovieDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
-  
+  const nav = useNavigation()
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>
+      <TouchableOpacity style={styles.back_button} onPress={() => {nav.goBack()}}>
+            <Text style={styles.buttonText}>Back</Text>
+          </TouchableOpacity>
       <Image source={{ uri: Img_path + movie.poster_path }} style={styles.poster} />
       <View style = {styles.container}>
         <Text style={styles.title}>{movie.title}</Text>
@@ -45,7 +49,8 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 5,
     marginRight: 10,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 10
   },
   detailsContainer: {
     flex: 1,
@@ -67,9 +72,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'purple',
     padding: 15,
     borderRadius: 5,
-    marginTop: 20,
+    marginTop: 10,
     alignItems: 'center',
     alignSelf: 'center'
+  },
+  back_button: {
+    backgroundColor: 'purple',
+    padding: 10,
+    borderRadius: 5,
+    marginLeft: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start'
   },
   buttonText: {
     color: '#fff',
