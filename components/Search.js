@@ -30,12 +30,14 @@ export default function Search() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style = {styles.sc}>
       <Searchbar
         placeholder="Search"
         onChangeText={setSearchQuery}
         value={searchQuery}
         style={styles.search}
       />
+      </View>
       {filteredMovieL.length === 0 ? (
         <Text style={styles.textContent}>No Results Found</Text>
       ) : (
@@ -79,4 +81,7 @@ const styles = StyleSheet.create({
   search: {
     marginTop: 5,
   },
+  sc: {
+    width: '100%'
+  }
 });
