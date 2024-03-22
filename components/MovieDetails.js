@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Img_path } from '../apicalls/apicalls';
 import {useNavigation } from '@react-navigation/native';
+import * as WebBrowser from 'expo-web-browser';
 const MovieDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
@@ -20,7 +21,14 @@ const MovieDetails = ({ route }) => {
         <Text style={styles.overview}>Rating: {movie.vote_average + "/10 (" + movie.vote_count + ")"}</Text>
         <Text style={styles.releaseDate}>Release Date: {movie.release_date}</Text>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={
+              
+              () => {
+                let title = movie.original_title.replace(/\s+/g, '+');
+                WebBrowser.openBrowserAsync('https://www.google.com/search?q=' + title + '+showtimes');
+              }
+
+        }>
             <Text style={styles.buttonText}>Buy Tickets</Text>
           </TouchableOpacity>
         </ScrollView>
