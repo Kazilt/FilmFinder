@@ -20,9 +20,9 @@ const MovieDetails = ({ route }) => {
         <Text style={styles.overview}>{movie.overview}</Text>
         <Text style={styles.overview}>Rating: {movie.vote_average + "/10 (" + movie.vote_count + ")"}</Text>
         <Text style={styles.releaseDate}>Release Date: {movie.release_date}</Text>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={
-              
+        </View >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginTop: 10 }}>
+        <TouchableOpacity style={styles.button} onPress={     
               () => {
                 let title = movie.original_title.replace(/\s+/g, '+');
                 WebBrowser.openBrowserAsync('https://www.google.com/search?q=' + title + '+showtimes');
@@ -31,6 +31,10 @@ const MovieDetails = ({ route }) => {
         }>
             <Text style={styles.buttonText}>Buy Tickets</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button} >
+          <Text style={styles.buttonText}>Favorite</Text>
+             </TouchableOpacity>
+          </View>
         </ScrollView>
     </SafeAreaView>
   );
@@ -80,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'purple',
     padding: 15,
     borderRadius: 5,
-    marginTop: 10,
+    margin: 10,
     alignItems: 'center',
     alignSelf: 'center'
   },
