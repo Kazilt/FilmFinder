@@ -13,7 +13,11 @@ export default function Home() {
   const nav = useNavigation()
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getData();
+      let data = []
+      for (let i=1; i < 8; i += 1) {
+        data = data.concat(await getData(i))
+        
+      }
       setMovieL(data);
     };
     fetchData();

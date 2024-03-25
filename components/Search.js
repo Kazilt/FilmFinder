@@ -15,7 +15,11 @@ export default function Search() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getData();
+      let data = []
+      for (let i=1; i < 11; i += 1) {
+        data = data.concat(await getData(i))
+        
+      }
       setMovieL(data);
       setFilteredMovieL(data);
     };
