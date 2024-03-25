@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Img_path } from '../apicalls/apicalls';
 import {useNavigation } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
+import { FavoriteContext } from '../FavoriteContext';
 const MovieDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
   const nav = useNavigation()
+  const [favs, setFavs] = useContext(FavoriteContext)
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>
@@ -31,9 +33,21 @@ const MovieDetails = ({ route }) => {
         }>
             <Text style={styles.buttonText}>Buy Tickets</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} >
-          <Text style={styles.buttonText}>Favorite</Text>
-             </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => {
+              setFavs(prevFavs => {
+                  if (!(movie.title in prevFavs)) {
+                      return { ...prevFavs, [movie.title]: movie };
+                  } else {
+                      const updatedFavs = { ...prevFavs };
+                      delete updatedFavs[movie.title];
+                      return updatedFavs;
+                  }
+              });
+            }}>
+              <Text style={styles.buttonText}>
+                  {movie.title in favs ? "Unfavorite" : "Favorite"}
+              </Text>
+        </TouchableOpacity>
           </View>
         </ScrollView>
     </SafeAreaView>

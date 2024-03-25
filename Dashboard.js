@@ -1,12 +1,14 @@
-import * as React from 'react';
+import {useState, createContext} from 'react';
 import { StyleSheet, View } from 'react-native';
 import {BottomNavigation } from 'react-native-paper';
 import Default from './Default';
 import NaviHome from './NaviHome';
 
+import { FavoriteContext } from './FavoriteContext';
+
 export default function Dashboard() {
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
         { key: 'home', title: 'H', focusedIcon: 'home', unfocusedIcon: 'home-outline'},
         { key: 'search', title: 'S', focusedIcon: 'card-search', unfocusedIcon: 'card-search-outline' },
         { key: 'liked', title: 'L', focusedIcon: 'star-circle', unfocusedIcon: 'star-circle-outline' },
@@ -20,16 +22,17 @@ export default function Dashboard() {
           case 'search':
             return <NaviHome type = "Search"/>;
           case 'liked':
-            return <Default />;
+            return <NaviHome type = "Favorites"/>;
           case 'profile':
             return <Default />;
           default:
             return null;
         }
       };
-    
+      const [favs, setFavs] = useState({})
 
     return (
+      <FavoriteContext.Provider value={[favs, setFavs]}>
         <BottomNavigation
         navigationState={{ index, routes }}
         onIndexChange={setIndex}
@@ -37,6 +40,7 @@ export default function Dashboard() {
         labeled = {false}
         barStyle={{ backgroundColor: '#FF0000' }}
       />
+      </FavoriteContext.Provider>
     );
   }
 
