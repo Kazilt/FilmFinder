@@ -5,6 +5,7 @@ import Default from './Default';
 import NaviHome from './NaviHome';
 
 import { FavoriteContext } from './FavoriteContext';
+import UserProfile from './components/UserProfile';
 
 export default function Dashboard() {
     const [index, setIndex] = useState(0);
@@ -24,7 +25,7 @@ export default function Dashboard() {
           case 'liked':
             return <NaviHome type = "Favorites"/>;
           case 'profile':
-            return <Default />;
+            return <UserProfile/>;
           default:
             return null;
         }
