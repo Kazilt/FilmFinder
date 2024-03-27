@@ -12,6 +12,7 @@ To start dev server, run
 
 `npx expo start`
 
-IOS: Scan QR code through camera
+Make sure device and server are on the same network
 
-Android: Scan QR code through Expo App
+- IOS: Scan QR code through camera
+- Android: Scan QR code through Expo App
