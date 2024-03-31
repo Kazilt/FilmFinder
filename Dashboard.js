@@ -39,7 +39,7 @@ export default function Dashboard() {
         onIndexChange={setIndex}
         renderScene={renderScene}
         labeled = {false}
-        barStyle={{ backgroundColor: '#FF0000' }}
+        barStyle={{ backgroundColor: '#72A98F' }}
       />
       </FavoriteContext.Provider>
     );
@@ -48,7 +48,7 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#000',
       alignItems: 'center',
       justifyContent: 'center',
     },

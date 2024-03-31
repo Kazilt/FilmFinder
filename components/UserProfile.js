@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput, Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 const redTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#ff0000', 
+    primary: '#72A98F', 
     accent: '#ff0000',
   },
 };
@@ -18,10 +19,14 @@ const UserProfile = () => {
 
   return (
     <PaperProvider theme={redTheme}>
-      <View style={[styles.container, { backgroundColor: 'black' }]}>
+      
+      <View style={[styles.container, { backgroundColor: '#3D5A6C' }]}>
+      <Text style={styles.loadingText}>Hello User!</Text>
+      <Text style={styles.textContent}>Enter Card Info Here</Text>
         <TextInput
           label="Card Number"
           mode="outlined"
+          secureTextEntry={true}
           style={styles.input}
           theme={redTheme}
         />
@@ -70,6 +75,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+  },
+  textContent: {
+    alignSelf: 'flex-start',
+    padding: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFF',
+    alignItems: 'center',
+  },
+  loadingText: {
+    alignSelf: 'center',
+    padding: 12,
+    fontSize: 16,
+    margin: 50,
+    color: '#FFF',
   },
   input: {
     width: '100%',
