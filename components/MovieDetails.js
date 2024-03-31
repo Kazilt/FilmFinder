@@ -56,7 +56,7 @@ const MovieDetails = ({ route }) => {
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: '#000',
+    backgroundColor: '#3D5A6C',
     flexGrow: 1
   },
   container: {
