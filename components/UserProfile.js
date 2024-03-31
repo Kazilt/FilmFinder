@@ -45,6 +45,7 @@ const UserProfile = () => {
         <TextInput
           label="Address"
           mode="outlined"
+          secureTextEntry={true}
           style={styles.input}
           theme={redTheme}
         />
