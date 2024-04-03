@@ -1,20 +1,73 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { Text, TextInput, Button } from "react-native-paper";
-import { useRef } from "react";
-
+import { useContext, useRef } from "react";
+import { doc, getDoc, setDoc, collection, addDoc } from "firebase/firestore";
+import { AppContext } from "../AppContext";
 export default function Login({ navigation }) {
   const username = useRef("");
   const password = useRef("");
-  const handleSignIn = () => {
-    // Handle sign in logic
-    if (true) {
-      navigation.replace("Dashboard");
+  const appContext = useContext(AppContext);
+  const db = appContext.db;
+  const handleSignIn = async () => {
+    try {
+      const usernameValue = username.current;
+      const passwordValue = password.current;
+
+      // Check if username or password is empty
+      if (!usernameValue || !passwordValue) {
+        alert("Username or password cannot be empty.");
+        return;
+      }
+
+      // Retrieve user document from Firestore
+      const userRef = doc(db, "users", usernameValue);
+      const userSnapshot = await getDoc(userRef);
+
+      // Check if user exists and password is correct
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.data();
+        if (userData.password === passwordValue) {
+          appContext.user[1](usernameValue);
+          alert("User signed in successfully.");
+
+          // Navigate to Dashboard after signin
+          navigation.replace("Dashboard");
+        } else {
+          alert("Incorrect password. Please try again.");
+        }
+      } else {
+        alert("User does not exist. Please sign up first.");
+      }
+    } catch (error) {
+      alert("Error signing in:", error);
     }
   };
 
-  const handleSignUp = () => {
-    // Handle sign up logic
+  const handleSignUp = async () => {
+    try {
+      const usernameValue = username.current;
+      const passwordValue = password.current;
+
+      // Check if username or password is empty
+      if (!usernameValue || !passwordValue) {
+        alert("Username or password cannot be empty.");
+        return;
+      }
+
+      // Check if username already exists
+      const userRef = doc(db, "users", usernameValue);
+      const userSnapshot = await getDoc(userRef);
+      if (userSnapshot.exists()) {
+        alert("Username already exists. Please choose a different username.");
+        return;
+      }
+      await setDoc(userRef, { password: passwordValue });
+      alert("User signed up successfully.");
+      appContext.user[1](usernameValue);
+      navigation.replace("Dashboard");
+    } catch (error) {
+      alert("Error signing up:", error);
+    }
   };
 
   return (

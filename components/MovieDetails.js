@@ -16,7 +16,8 @@ const MovieDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
   const nav = useNavigation();
-  const [favs, setFavs] = useContext(AppContext).favs;
+  a = useContext(AppContext);
+  const [favs, setFavs] = a.favs;
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>

@@ -23,11 +23,12 @@ const UserProfile = () => {
   const handleSaveInfo = () => {
     // Handle saving credit card info and address
   };
+  user = useContext(AppContext).user[0];
   const navRef = useContext(AppContext).navRef;
   return (
     <PaperProvider theme={redTheme}>
       <View style={[styles.container, { backgroundColor: "#3D5A6C" }]}>
-        <Text style={styles.loadingText}>Hello User!</Text>
+        <Text style={styles.loadingText}>Hello {user}!</Text>
         <Text style={styles.textContent}>Enter Card Info Here</Text>
         <TextInput
           label="Card Number"
