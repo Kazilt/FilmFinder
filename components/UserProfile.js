@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
+import { StackActions } from "@react-navigation/native";
 import {
   Button,
   TextInput,
@@ -7,6 +8,7 @@ import {
   DefaultTheme,
 } from "react-native-paper";
 import { Text } from "react-native-paper";
+import { AppContext } from "../AppContext";
 
 const redTheme = {
   ...DefaultTheme,
@@ -21,7 +23,7 @@ const UserProfile = () => {
   const handleSaveInfo = () => {
     // Handle saving credit card info and address
   };
-
+  const navRef = useContext(AppContext).navRef;
   return (
     <PaperProvider theme={redTheme}>
       <View style={[styles.container, { backgroundColor: "#3D5A6C" }]}>
@@ -63,7 +65,10 @@ const UserProfile = () => {
         </Button>
         <Button
           mode="contained"
-          onPress={handleSaveInfo}
+          onPress={() => {
+            navRef.current?.dispatch(StackActions.replace("Login"));
+            console.log(navRef.current);
+          }}
           style={styles.button}
           theme={redTheme}
         >

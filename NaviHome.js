@@ -8,7 +8,7 @@ import Favorites from "./components/Favorites";
 export default NaviHome = (props) => {
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Stack.Navigator initialRouteName={props.type}>
         <Stack.Screen
           name="Home"

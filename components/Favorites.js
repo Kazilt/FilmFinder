@@ -5,11 +5,11 @@ import { Text } from "react-native-paper";
 import MovieCard from "./MovieCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { FavoriteContext } from "../FavoriteContext";
+import { AppContext } from "../AppContext";
 
 export default function Favorites({ route }) {
   const nav = useNavigation();
-  const movieL = useContext(FavoriteContext)[0];
+  const movieL = useContext(AppContext).favs[0];
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.textContent}>Favorites:</Text>
