@@ -8,7 +8,6 @@ export default function Login({ navigation }) {
   const password = useRef("");
   const handleSignIn = () => {
     // Handle sign in logic
-    console.log(username.current + password.current);
     if (true) {
       navigation.replace("Dashboard");
     }
@@ -16,7 +15,6 @@ export default function Login({ navigation }) {
 
   const handleSignUp = () => {
     // Handle sign up logic
-    console.log("Signing up...");
   };
 
   return (

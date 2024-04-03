@@ -8,11 +8,14 @@ import Login from "./components/Login";
 import { AppContext } from "./AppContext";
 import { getData } from "./apicalls/apicalls";
 import { useRef, useState, useEffect } from "react";
+import { FireApp } from "./Firebase";
+import { collection, addDoc, getFirestore } from "firebase/firestore";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const navRef = useRef();
   const [favs, setFavs] = useState({});
   const [movieL, setMovieL] = useState([]);
+  const db = getFirestore(FireApp);
   useEffect(() => {
     const fetchData = async () => {
       let data = [];
@@ -21,13 +24,28 @@ export default function App() {
       }
       setMovieL(data);
     };
+
+    const addUserToFirestore = async () => {
+      try {
+        // const docRef = await addDoc(collection(db, "users"), {
+        //   first: "Ada",
+        //   last: "Lovelace",
+        //   born: 1815,
+        // });
+        // console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    };
     fetchData();
+    addUserToFirestore();
   }, []);
 
   const appContext = {
     navRef: navRef,
     favs: [favs, setFavs],
     movies: [movieL, setMovieL],
+    db: db,
   };
 
   return (

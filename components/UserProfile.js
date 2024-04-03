@@ -67,7 +67,6 @@ const UserProfile = () => {
           mode="contained"
           onPress={() => {
             navRef.current?.dispatch(StackActions.replace("Login"));
-            console.log(navRef.current);
           }}
           style={styles.button}
           theme={redTheme}
