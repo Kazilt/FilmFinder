@@ -28,10 +28,10 @@ export default function Login({ navigation }) {
         const userData = userSnapshot.data();
         if (userData.password === passwordValue) {
           appContext.user[1](usernameValue);
-          alert("User signed in successfully.");
 
           // Navigate to Dashboard after signin
           navigation.replace("Dashboard");
+          alert("User signed in successfully.");
         } else {
           alert("Incorrect password. Please try again.");
         }
@@ -62,9 +62,10 @@ export default function Login({ navigation }) {
         return;
       }
       await setDoc(userRef, { password: passwordValue });
-      alert("User signed up successfully.");
+
       appContext.user[1](usernameValue);
       navigation.replace("Dashboard");
+      alert("User signed up successfully.");
     } catch (error) {
       alert("Error signing up:", error);
     }

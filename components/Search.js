@@ -5,11 +5,11 @@ import { Text, Searchbar } from "react-native-paper";
 import MovieCard from "./MovieCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { AppContext } from "../AppContext";
+import { MoviesContext } from "../AppContext";
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");
-  const movieL = useContext(AppContext).movies[0];
+  const movieL = useContext(MoviesContext).movies[0];
   const [filteredMovieL, setFilteredMovieL] = useState([]);
   const nav = useNavigation();
 

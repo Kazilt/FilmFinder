@@ -10,10 +10,10 @@ import { getData } from "./apicalls/apicalls";
 import { useRef, useState, useEffect } from "react";
 import { FireApp } from "./Firebase";
 import { getFirestore } from "firebase/firestore";
+import { MoviesContext } from "./AppContext";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const navRef = useRef();
-  const [favs, setFavs] = useState({});
   const [movieL, setMovieL] = useState([]);
   const db = getFirestore(FireApp);
   const [user, setUser] = useState(null);
@@ -28,11 +28,11 @@ export default function App() {
 
     fetchData();
   }, []);
-
+  const moviesContext = {
+    movies: [movieL, setMovieL],
+  };
   const appContext = {
     navRef: navRef,
-    favs: [favs, setFavs],
-    movies: [movieL, setMovieL],
     db: db,
     user: [user, setUser],
   };
@@ -41,12 +41,14 @@ export default function App() {
     <SafeAreaProvider>
       <PaperProvider>
         <AppContext.Provider value={appContext}>
-          <NavigationContainer ref={navRef}>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Dashboard" component={Dashboard} />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <MoviesContext.Provider value={moviesContext}>
+            <NavigationContainer ref={navRef}>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Dashboard" component={Dashboard} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </MoviesContext.Provider>
         </AppContext.Provider>
       </PaperProvider>
     </SafeAreaProvider>

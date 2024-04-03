@@ -5,10 +5,10 @@ import { Text } from "react-native-paper";
 import MovieCard from "./MovieCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { AppContext } from "../AppContext";
+import { MoviesContext } from "../AppContext";
 
 export default function Home() {
-  const movieL = useContext(AppContext).movies[0];
+  const movieL = useContext(MoviesContext).movies[0];
   const nav = useNavigation();
   return (
     <SafeAreaView style={styles.container}>

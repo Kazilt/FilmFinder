@@ -11,13 +11,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Img_path } from "../apicalls/apicalls";
 import { useNavigation } from "@react-navigation/native";
 import * as WebBrowser from "expo-web-browser";
-import { AppContext } from "../AppContext";
+import { FavoritesContext } from "../AppContext";
 const MovieDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
   const nav = useNavigation();
-  a = useContext(AppContext);
-  const [favs, setFavs] = a.favs;
+  const [favs, setFavs] = useContext(FavoritesContext).favs;
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>

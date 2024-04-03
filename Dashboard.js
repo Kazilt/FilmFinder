@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { BottomNavigation } from "react-native-paper";
-import Default from "./Default";
 import NaviHome from "./NaviHome";
 
 import UserProfile from "./components/UserProfile";
+import { FavoritesContext } from "./AppContext";
 
 export default function Dashboard() {
   const [index, setIndex] = useState(0);
+  const [favs, setFavs] = useState({});
+  const favsContext = {
+    favs: [favs, setFavs],
+  };
   const [routes] = useState([
     {
       key: "home",
@@ -51,13 +55,15 @@ export default function Dashboard() {
   };
 
   return (
-    <BottomNavigation
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-      labeled={false}
-      barStyle={{ backgroundColor: "#72A98F" }}
-    />
+    <FavoritesContext.Provider value={favsContext}>
+      <BottomNavigation
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        renderScene={renderScene}
+        labeled={false}
+        barStyle={{ backgroundColor: "#72A98F" }}
+      />
+    </FavoritesContext.Provider>
   );
 }
 
