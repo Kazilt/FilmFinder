@@ -1,29 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { Text, Searchbar } from "react-native-paper";
-import { getData } from "../apicalls/apicalls";
 import MovieCard from "./MovieCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../AppContext";
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [movieL, setMovieL] = useState([]);
+  const movieL = useContext(AppContext).movies[0];
   const [filteredMovieL, setFilteredMovieL] = useState([]);
   const nav = useNavigation();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      let data = [];
-      for (let i = 1; i < 11; i += 1) {
-        data = data.concat(await getData(i));
-      }
-      setMovieL(data);
-      setFilteredMovieL(data);
-    };
-    fetchData();
-  }, []);
 
   useEffect(() => {
     // Filter movieL based on search query

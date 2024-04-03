@@ -1,26 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
-import { getData } from "../apicalls/apicalls";
 import MovieCard from "./MovieCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../AppContext";
 
 export default function Home() {
-  const [movieL, setMovieL] = useState([]);
+  const movieL = useContext(AppContext).movies[0];
   const nav = useNavigation();
-  useEffect(() => {
-    const fetchData = async () => {
-      let data = [];
-      for (let i = 1; i < 8; i += 1) {
-        data = data.concat(await getData(i));
-      }
-      setMovieL(data);
-    };
-    fetchData();
-  }, []);
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.textContent}>

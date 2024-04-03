@@ -6,12 +6,29 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./components/Login";
 import { AppContext } from "./AppContext";
-import { useRef, useState } from "react";
+import { getData } from "./apicalls/apicalls";
+import { useRef, useState, useEffect } from "react";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const navRef = useRef();
   const [favs, setFavs] = useState({});
-  const appContext = { navRef: navRef, favs: [favs, setFavs] };
+  const [movieL, setMovieL] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      let data = [];
+      for (let i = 1; i < 11; i += 1) {
+        data = data.concat(await getData(i));
+      }
+      setMovieL(data);
+    };
+    fetchData();
+  }, []);
+
+  const appContext = {
+    navRef: navRef,
+    favs: [favs, setFavs],
+    movies: [movieL, setMovieL],
+  };
 
   return (
     <SafeAreaProvider>
