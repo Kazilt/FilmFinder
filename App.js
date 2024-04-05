@@ -20,7 +20,7 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       let data = [];
-      for (let i = 1; i < 11; i += 1) {
+      for (let i = 1; i < 3; i += 1) {
         data = data.concat(await getData(i));
       }
       setMovieL(data);

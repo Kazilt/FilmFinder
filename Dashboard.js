@@ -5,6 +5,7 @@ import NaviHome from "./NaviHome";
 
 import UserProfile from "./components/UserProfile";
 import { FavoritesContext } from "./AppContext";
+import Polling from "./components/polling/Polling";
 
 export default function Dashboard() {
   const [index, setIndex] = useState(0);
@@ -37,6 +38,12 @@ export default function Dashboard() {
       focusedIcon: "account-circle",
       unfocusedIcon: "account-circle-outline",
     },
+    {
+      key: "poll",
+      title: "Po",
+      focusedIcon: "poll",
+      unfocusedIcon: "poll",
+    },
   ]);
 
   const renderScene = ({ route }) => {
@@ -49,6 +56,8 @@ export default function Dashboard() {
         return <NaviHome type="Favorites" />;
       case "profile":
         return <UserProfile />;
+      case "poll":
+        return <Polling />;
       default:
         return null;
     }
