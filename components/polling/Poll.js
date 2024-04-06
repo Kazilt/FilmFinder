@@ -1,38 +1,54 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import RNPoll, { IChoice } from "react-native-poll";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const choices = [
-  { id: 1, choice: "Nike", votes: 12 },
-  { id: 2, choice: "Adidas", votes: 1 },
-  { id: 3, choice: "Puma", votes: 3 },
-  { id: 4, choice: "Reebok", votes: 5 },
-  { id: 5, choice: "Under Armour", votes: 9 },
-];
+import { PollsContext } from "../../AppContext";
+import { useNavigation } from "@react-navigation/native";
 
 const Poll = () => {
+  const pContext = useContext(PollsContext);
+  console.log(pContext);
+  const date = pContext.date[0];
+  console.log(date.toDateString());
+  const ini_movs = Object.keys(pContext.selectedMovs[0]).map((mov, key) => {
+    return { id: key, choice: mov, votes: 0 };
+  });
+  const [choices, setChoices] = useState(ini_movs);
+  const [totalVotes, setTotal] = useState(
+    choices.reduce((total, choice) => total + choice.votes, 0)
+  );
+
+  const [pollID, setPollID] = pContext.pollId;
+  const nav = useNavigation();
   const handleChoicePress = (selectedChoice) => {
     console.log("SelectedChoice: ", selectedChoice);
     // You can handle the selected choice here, like updating the UI or sending data to a server
+    setChoices((prev) => {
+      prev[selectedChoice.id].votes += 1;
+      return prev;
+    });
+    setTotal((prev) => {
+      return prev + 1;
+    });
+  };
+  const leavePoll = () => {
+    setPollID(null);
+    nav.navigate("Corj");
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.pollID}>Poll ID: </Text>
+      <Text style={styles.pollID}>Poll ID: {pollID}</Text>
+      <Text style={styles.pollID}>Date: {date.toDateString()}</Text>
       <View style={styles.pollContainer}>
         <RNPoll
-          totalVotes={30}
+          totalVotes={totalVotes}
           choices={choices}
           onChoicePress={handleChoicePress}
+          disableBuiltInIncreaseVote={true}
         />
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          console.log("Finish Poll");
-        }}
-      >
+      <TouchableOpacity style={styles.button} onPress={leavePoll}>
         <Text style={styles.buttonText}>Leave Poll</Text>
       </TouchableOpacity>
     </SafeAreaView>

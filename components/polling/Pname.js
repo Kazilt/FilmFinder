@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,13 +6,18 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
+import { PollsContext } from "../../AppContext";
 
 export default function Pname({ navigation }) {
   const [pollTitle, setPollTitle] = useState("");
+  setSelectedMovs = useContext(PollsContext).selectedMovs[1];
+  setCPoll = useContext(PollsContext).cPoll[1];
 
   const handleCreatePoll = () => {
     // Here you can handle the creation of the poll with the entered title
-    console.log("Poll Title:", pollTitle);
+
+    setSelectedMovs({});
+    setCPoll(pollTitle);
     navigation.navigate("MovieChoice");
   };
   const createRandID = () => {

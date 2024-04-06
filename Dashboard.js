@@ -4,7 +4,7 @@ import { BottomNavigation } from "react-native-paper";
 import NaviHome from "./NaviHome";
 
 import UserProfile from "./components/UserProfile";
-import { AppContext, FavoritesContext } from "./AppContext";
+import { AppContext, FavoritesContext, PollsContext } from "./AppContext";
 import Polling from "./components/polling/Polling";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -12,6 +12,10 @@ export default function Dashboard() {
   const [index, setIndex] = useState(0);
   appC = useContext(AppContext);
   const [favs, setFavs] = useState({});
+  const cPoll = useState(null);
+  const [pollId, setPollId] = useState(null);
+  const selectedMovs = useState({});
+  const date = useState(null);
   useEffect(() => {
     const getFavs = async () => {
       const userRef = doc(appC.db, "users", appC.user[0]);
@@ -25,6 +29,12 @@ export default function Dashboard() {
 
   const favsContext = {
     favs: [favs, setFavs],
+  };
+  const pollsContext = {
+    pollId: [pollId, setPollId],
+    selectedMovs: selectedMovs,
+    cPoll: cPoll,
+    date: date,
   };
   const [routes] = useState([
     {
@@ -78,13 +88,15 @@ export default function Dashboard() {
 
   return (
     <FavoritesContext.Provider value={favsContext}>
-      <BottomNavigation
-        navigationState={{ index, routes }}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-        labeled={false}
-        barStyle={{ backgroundColor: "#72A98F" }}
-      />
+      <PollsContext.Provider value={pollsContext}>
+        <BottomNavigation
+          navigationState={{ index, routes }}
+          onIndexChange={setIndex}
+          renderScene={renderScene}
+          labeled={false}
+          barStyle={{ backgroundColor: "#72A98F" }}
+        />
+      </PollsContext.Provider>
     </FavoritesContext.Provider>
   );
 }

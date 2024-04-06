@@ -1,24 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { PollsContext } from "../../AppContext";
 export const Pconfirm = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const movies = [
-    { id: "1", title: "Movie 1" },
-    { id: "2", title: "Movie 2" },
-    { id: "3", title: "Movie 3" },
-    // Add more movies as needed
-  ];
+  pContext = useContext(PollsContext);
+  const titles = pContext.selectedMovs[0];
+  const [selectedDate, setSelectedDate] = pContext.date;
+
+  // Add more movies as needed
+
   nav = useNavigation();
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -33,18 +32,18 @@ export const Pconfirm = () => {
     hideDatePicker();
   };
 
-  const renderItem = ({ item }) => (
-    <Text style={styles.item}>{item.title}</Text>
-  );
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Selected Movies: </Text>
-      <FlatList
-        data={movies}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      <ScrollView>
+        {Object.keys(titles).map((mov, i) => {
+          return (
+            <Text style={styles.item} key={i}>
+              {mov}
+            </Text>
+          );
+        })}
+      </ScrollView>
       <View style={styles.datePickerContainer}>
         <TouchableOpacity style={styles.button} onPress={showDatePicker}>
           <Text style={styles.buttonText}>
@@ -52,6 +51,7 @@ export const Pconfirm = () => {
           </Text>
         </TouchableOpacity>
         <DateTimePicker
+          minimumDate={new Date()}
           isVisible={isDatePickerVisible}
           mode="date"
           onConfirm={handleConfirmDate}
@@ -63,6 +63,7 @@ export const Pconfirm = () => {
         onPress={() => {
           // Handle confirm action here
           console.log("Selected Date:", selectedDate);
+          pContext.pollId[1](pContext.cPoll[0]);
           nav.navigate("Poll");
         }}
       >

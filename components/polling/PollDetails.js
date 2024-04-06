@@ -10,13 +10,25 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Img_path } from "../../apicalls/apicalls";
 import { useNavigation } from "@react-navigation/native";
-import * as WebBrowser from "expo-web-browser";
-import { FavoritesContext } from "../../AppContext";
+import { FavoritesContext, PollsContext } from "../../AppContext";
 export const PollDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
   const nav = useNavigation();
-  const [favs, setFavs] = useContext(FavoritesContext).favs;
+  const [selectedMovs, setSelectedMovs] = useContext(PollsContext).selectedMovs;
+
+  const handleSelect = () => {
+    setSelectedMovs((prevMovs) => {
+      if (!(movie.title in prevMovs)) {
+        const updated = { ...prevMovs, [movie.title]: true };
+        return updated;
+      } else {
+        const updatedFavs = { ...prevMovs };
+        delete updatedFavs[movie.title];
+        return updatedFavs;
+      }
+    });
+  };
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>
@@ -51,14 +63,9 @@ export const PollDetails = ({ route }) => {
             marginTop: 10,
           }}
         >
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              console.log("Pressed");
-            }}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleSelect}>
             <Text style={styles.buttonText}>
-              {movie.title in favs ? "Unselect" : "Select"}
+              {movie.title in selectedMovs ? "Unselect" : "Select"}
             </Text>
           </TouchableOpacity>
         </View>
