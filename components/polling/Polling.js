@@ -1,15 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
-import Home from "../Home";
-import MovieDetails from "../MovieDetails";
 import { createStackNavigator } from "@react-navigation/stack";
-import Search from "../Search";
-import Favorites from "../Favorites";
 import SelectScreen from "./SelectScreen";
 import Pname from "./Pname";
 import Jname from "./Jname";
 import MovieChoice from "./MovieChoice";
 import { PollDetails } from "./PollDetails";
 import Poll from "./Poll";
+import { Pconfirm } from "./Pconfirm";
 
 export default Polling = (props) => {
   const Stack = createStackNavigator();
@@ -44,6 +41,11 @@ export default Polling = (props) => {
         <Stack.Screen
           name="Poll"
           component={Poll}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Pconfirm"
+          component={Pconfirm}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

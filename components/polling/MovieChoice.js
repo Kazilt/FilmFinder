@@ -50,7 +50,7 @@ export default function MovieChoice() {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          nav.navigate("Poll");
+          nav.navigate("Pconfirm");
         }}
       >
         <Text style={styles.buttonText}>Finish Poll</Text>

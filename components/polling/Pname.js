@@ -15,6 +15,16 @@ export default function Pname({ navigation }) {
     console.log("Poll Title:", pollTitle);
     navigation.navigate("MovieChoice");
   };
+  const createRandID = () => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let randomId = "";
+    for (let i = 0; i < 6; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters[randomIndex];
+    }
+    setPollTitle(randomId);
+  };
 
   return (
     <View style={styles.container}>
@@ -27,6 +37,9 @@ export default function Pname({ navigation }) {
       />
       <TouchableOpacity style={styles.button} onPress={handleCreatePoll}>
         <Text style={styles.buttonText}>Create Poll</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={createRandID}>
+        <Text style={styles.buttonText}>Suggest Poll ID</Text>
       </TouchableOpacity>
     </View>
   );
@@ -56,6 +69,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 200,
     alignItems: "center",
+    marginBottom: 20,
   },
   buttonText: {
     color: "white",
