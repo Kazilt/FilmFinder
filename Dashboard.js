@@ -46,16 +46,16 @@ export default function Dashboard() {
       unfocusedIcon: "star-circle-outline",
     },
     {
-      key: "profile",
-      title: "P",
-      focusedIcon: "account-circle",
-      unfocusedIcon: "account-circle-outline",
-    },
-    {
       key: "poll",
       title: "Po",
       focusedIcon: "poll",
       unfocusedIcon: "poll",
+    },
+    {
+      key: "profile",
+      title: "P",
+      focusedIcon: "account-circle",
+      unfocusedIcon: "account-circle-outline",
     },
   ]);
 
