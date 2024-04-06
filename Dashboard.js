@@ -1,15 +1,28 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { BottomNavigation } from "react-native-paper";
 import NaviHome from "./NaviHome";
 
 import UserProfile from "./components/UserProfile";
-import { FavoritesContext } from "./AppContext";
+import { AppContext, FavoritesContext } from "./AppContext";
 import Polling from "./components/polling/Polling";
+import { doc, getDoc } from "firebase/firestore";
 
 export default function Dashboard() {
   const [index, setIndex] = useState(0);
+  appC = useContext(AppContext);
   const [favs, setFavs] = useState({});
+  useEffect(() => {
+    const getFavs = async () => {
+      const userRef = doc(appC.db, "users", appC.user[0]);
+      ini_favs = (await getDoc(userRef)).data();
+      if ("favorites" in ini_favs) {
+        setFavs(ini_favs.favorites);
+      }
+    };
+    getFavs();
+  }, []);
+
   const favsContext = {
     favs: [favs, setFavs],
   };

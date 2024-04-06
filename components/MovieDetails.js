@@ -11,12 +11,33 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Img_path } from "../apicalls/apicalls";
 import { useNavigation } from "@react-navigation/native";
 import * as WebBrowser from "expo-web-browser";
-import { FavoritesContext } from "../AppContext";
+import { AppContext, FavoritesContext } from "../AppContext";
+import { doc, updateDoc } from "firebase/firestore";
 const MovieDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
   const nav = useNavigation();
   const [favs, setFavs] = useContext(FavoritesContext).favs;
+  const appContext = useContext(AppContext);
+  const favButton = () => {
+    setFavs((prevFavs) => {
+      const handleUpdate = async (updated) => {
+        const userRef = doc(appContext.db, "users", appContext.user[0]);
+
+        await updateDoc(userRef, { favorites: updated });
+      };
+      if (!(movie.title in prevFavs)) {
+        const updated = { ...prevFavs, [movie.title]: movie };
+        handleUpdate(updated);
+        return updated;
+      } else {
+        const updatedFavs = { ...prevFavs };
+        delete updatedFavs[movie.title];
+        handleUpdate(updatedFavs);
+        return updatedFavs;
+      }
+    });
+  };
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView>
@@ -62,20 +83,7 @@ const MovieDetails = ({ route }) => {
           >
             <Text style={styles.buttonText}>Buy Tickets</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setFavs((prevFavs) => {
-                if (!(movie.title in prevFavs)) {
-                  return { ...prevFavs, [movie.title]: movie };
-                } else {
-                  const updatedFavs = { ...prevFavs };
-                  delete updatedFavs[movie.title];
-                  return updatedFavs;
-                }
-              });
-            }}
-          >
+          <TouchableOpacity style={styles.button} onPress={favButton}>
             <Text style={styles.buttonText}>
               {movie.title in favs ? "Unfavorite" : "Favorite"}
             </Text>
