@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Clipboard,
+} from "react-native";
 import RNPoll, { IChoice } from "react-native-poll";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppContext, PollsContext } from "../../AppContext";
@@ -65,6 +71,14 @@ const Poll = ({ route }) => {
       <TouchableOpacity style={styles.button} onPress={leavePoll}>
         <Text style={styles.buttonText}>Leave Poll</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          Clipboard.setString(pollID);
+        }}
+      >
+        <Text style={styles.buttonText}>Copy Poll ID</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -93,7 +107,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     width: 200,
-    margin: 50,
+    margin: 10,
     alignItems: "center",
   },
   buttonText: {

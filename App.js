@@ -11,7 +11,9 @@ import { useRef, useState, useEffect } from "react";
 import { FireApp } from "./Firebase";
 import { getFirestore } from "firebase/firestore";
 import { MoviesContext } from "./AppContext";
+import { LogBox } from "react-native";
 export default function App() {
+  LogBox.ignoreLogs(["Clipboard"]);
   const Stack = createNativeStackNavigator();
   const navRef = useRef();
   const [movieL, setMovieL] = useState([]);
