@@ -9,12 +9,15 @@ import {
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { PollsContext } from "../../AppContext";
+import { AppContext, PollsContext } from "../../AppContext";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 export const Pconfirm = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  pContext = useContext(PollsContext);
+  const pContext = useContext(PollsContext);
   const titles = pContext.selectedMovs[0];
   const [selectedDate, setSelectedDate] = pContext.date;
+  const appContext = useContext(AppContext);
+  const db = appContext.db;
 
   // Add more movies as needed
 
@@ -30,6 +33,37 @@ export const Pconfirm = () => {
   const handleConfirmDate = (date) => {
     setSelectedDate(date);
     hideDatePicker();
+  };
+  const handleCreate = () => {
+    const pollID = pContext.cPoll[0];
+    if (!selectedDate) {
+      alert("You must select a date");
+      return;
+    }
+    const date = selectedDate.toDateString();
+    const handleC = async () => {
+      try {
+        // Check if poll ID already exists
+        const pRef = doc(db, "polls", pollID);
+        const pSnapshot = await getDoc(pRef);
+        if (pSnapshot.exists()) {
+          alert("Poll ID already exists. Please choose a different ID.");
+          return;
+        }
+        const ini_movs = Object.keys(pContext.selectedMovs[0]).map(
+          (mov, key) => {
+            return { id: key, choice: mov, votes: 0 };
+          }
+        );
+        await setDoc(pRef, { date: date, votes: ini_movs, total: 0 });
+        pContext.pollId[1](pollID);
+        nav.navigate("Poll", false);
+        alert("Poll made successfully.");
+      } catch (error) {
+        alert("Error signing up:", error);
+      }
+    };
+    handleC();
   };
 
   return (
@@ -58,15 +92,7 @@ export const Pconfirm = () => {
           onCancel={hideDatePicker}
         />
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          // Handle confirm action here
-          console.log("Selected Date:", selectedDate);
-          pContext.pollId[1](pContext.cPoll[0]);
-          nav.navigate("Poll");
-        }}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleCreate}>
         <Text style={styles.buttonText}>Confirm</Text>
       </TouchableOpacity>
     </SafeAreaView>

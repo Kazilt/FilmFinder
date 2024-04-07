@@ -1,51 +1,65 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import RNPoll, { IChoice } from "react-native-poll";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { PollsContext } from "../../AppContext";
+import { AppContext, PollsContext } from "../../AppContext";
 import { useNavigation } from "@react-navigation/native";
+import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 
-const Poll = () => {
+const Poll = ({ route }) => {
+  const beenVoted = route.params;
   const pContext = useContext(PollsContext);
-  console.log(pContext);
-  const date = pContext.date[0];
-  console.log(date.toDateString());
-  const ini_movs = Object.keys(pContext.selectedMovs[0]).map((mov, key) => {
-    return { id: key, choice: mov, votes: 0 };
-  });
-  const [choices, setChoices] = useState(ini_movs);
-  const [totalVotes, setTotal] = useState(
-    choices.reduce((total, choice) => total + choice.votes, 0)
-  );
-
+  const [date, setDate] = useState("");
+  const [choices, setChoices] = useState([]);
   const [pollID, setPollID] = pContext.pollId;
+  const [totalVote, setTotalVote] = useState(0);
+  const uid = useContext(AppContext).user[0];
+  const db = useContext(AppContext).db;
+
+  useEffect(() => {
+    const usub = onSnapshot(doc(db, "polls", pollID), (doc) => {
+      const data = doc.data();
+      setTotalVote(data.total);
+      setDate(data.date);
+      setChoices(data.votes);
+    });
+    return () => usub();
+  });
+
   const nav = useNavigation();
   const handleChoicePress = (selectedChoice) => {
-    console.log("SelectedChoice: ", selectedChoice);
-    // You can handle the selected choice here, like updating the UI or sending data to a server
-    setChoices((prev) => {
-      prev[selectedChoice.id].votes += 1;
-      return prev;
-    });
-    setTotal((prev) => {
-      return prev + 1;
-    });
+    const appChoice = async () => {
+      ref = doc(db, "polls", pollID);
+      nv = choices;
+      nv[selectedChoice.id].votes += 1;
+      setDoc(ref, {
+        date: date,
+        total: totalVote + 1,
+        votes: nv,
+      });
+      const uref = doc(db, "users", uid, "voted", pollID);
+      // const curr = await getDoc(uref)
+
+      setDoc(uref, { pollID: pollID });
+    };
+    appChoice();
   };
   const leavePoll = () => {
-    setPollID(null);
     nav.navigate("Corj");
+    // setPollID(null);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.pollID}>Poll ID: {pollID}</Text>
-      <Text style={styles.pollID}>Date: {date.toDateString()}</Text>
+      <Text style={styles.pollID}>Date: {date}</Text>
       <View style={styles.pollContainer}>
         <RNPoll
-          totalVotes={totalVotes}
+          totalVotes={totalVote}
           choices={choices}
           onChoicePress={handleChoicePress}
           disableBuiltInIncreaseVote={true}
+          hasBeenVoted={beenVoted}
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={leavePoll}>
