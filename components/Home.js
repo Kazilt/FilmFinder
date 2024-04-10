@@ -40,15 +40,9 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-<<<<<<< HEAD
-    backgroundColor: '#3D5A6C',
-    alignItems: 'center',
-    justifyContent: 'center',
-=======
     backgroundColor: "#3D5A6C",
     alignItems: "center",
     justifyContent: "center",
->>>>>>> dbe6f39a9a567d6517404ecd17649fd3d7d81807
   },
   scrollViewContent: {
     flexDirection: "row",

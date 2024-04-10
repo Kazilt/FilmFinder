@@ -90,27 +90,6 @@ export default function Dashboard() {
     <FavoritesContext.Provider value={favsContext}>
       <PollsContext.Provider value={pollsContext}>
         <BottomNavigation
-<<<<<<< HEAD
-        navigationState={{ index, routes }}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-        labeled = {false}
-        barStyle={{ backgroundColor: '#72A98F' }}
-      />
-      </FavoriteContext.Provider>
-    );
-  }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#000',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
-  
-=======
           navigationState={{ index, routes }}
           onIndexChange={setIndex}
           renderScene={renderScene}
@@ -130,4 +109,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
->>>>>>> dbe6f39a9a567d6517404ecd17649fd3d7d81807
