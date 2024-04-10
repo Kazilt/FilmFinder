@@ -5,6 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Search from "./components/Search";
 import Favorites from "./components/Favorites";
 
+
+
 export default NaviHome = (props) => {
   const Stack = createStackNavigator();
   return (
