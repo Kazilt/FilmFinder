@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { Text, Searchbar } from "react-native-paper";
-import MovieCard from "./MovieCard";
+import MovieCard from "../MovieCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { MoviesContext } from "../AppContext";
+import { MoviesContext } from "../../AppContext";
 
-export default function Search() {
+export default function MovieChoice() {
   const [searchQuery, setSearchQuery] = useState("");
   const movieL = useContext(MoviesContext).movies[0];
   const [filteredMovieL, setFilteredMovieL] = useState([]);
@@ -39,7 +39,7 @@ export default function Search() {
             return (
               <TouchableOpacity
                 key={i}
-                onPress={() => nav.navigate("MovieDetails", { movie })}
+                onPress={() => nav.navigate("PollDetails", { movie })}
               >
                 <MovieCard movie={movie} />
               </TouchableOpacity>
@@ -47,7 +47,14 @@ export default function Search() {
           })}
         </ScrollView>
       )}
-
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          nav.navigate("Pconfirm");
+        }}
+      >
+        <Text style={styles.buttonText}>Finish Poll</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </SafeAreaView>
   );
@@ -56,15 +63,9 @@ export default function Search() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-<<<<<<< HEAD
-    backgroundColor: '#3D5A6C',
-    alignItems: 'center',
-    justifyContent: 'center',
-=======
     backgroundColor: "#3D5A6C",
     alignItems: "center",
     justifyContent: "center",
->>>>>>> dbe6f39a9a567d6517404ecd17649fd3d7d81807
   },
   scrollViewContent: {
     flexDirection: "row",
@@ -85,5 +86,13 @@ const styles = StyleSheet.create({
   },
   sc: {
     width: "100%",
+  },
+  button: {
+    backgroundColor: "#007bff",
+    padding: 15,
+    borderRadius: 10,
+    width: 200,
+    alignItems: "center",
+    margin: 10,
   },
 });

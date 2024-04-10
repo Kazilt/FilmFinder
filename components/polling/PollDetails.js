@@ -8,32 +8,23 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Img_path } from "../apicalls/apicalls";
+import { Img_path } from "../../apicalls/apicalls";
 import { useNavigation } from "@react-navigation/native";
-import * as WebBrowser from "expo-web-browser";
-import { AppContext, FavoritesContext } from "../AppContext";
-import { doc, updateDoc } from "firebase/firestore";
-const MovieDetails = ({ route }) => {
+import { FavoritesContext, PollsContext } from "../../AppContext";
+export const PollDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
   const nav = useNavigation();
-  const [favs, setFavs] = useContext(FavoritesContext).favs;
-  const appContext = useContext(AppContext);
-  const favButton = () => {
-    setFavs((prevFavs) => {
-      const handleUpdate = async (updated) => {
-        const userRef = doc(appContext.db, "users", appContext.user[0]);
+  const [selectedMovs, setSelectedMovs] = useContext(PollsContext).selectedMovs;
 
-        await updateDoc(userRef, { favorites: updated });
-      };
-      if (!(movie.title in prevFavs)) {
-        const updated = { ...prevFavs, [movie.title]: movie };
-        handleUpdate(updated);
+  const handleSelect = () => {
+    setSelectedMovs((prevMovs) => {
+      if (!(movie.title in prevMovs)) {
+        const updated = { ...prevMovs, [movie.title]: true };
         return updated;
       } else {
-        const updatedFavs = { ...prevFavs };
+        const updatedFavs = { ...prevMovs };
         delete updatedFavs[movie.title];
-        handleUpdate(updatedFavs);
         return updatedFavs;
       }
     });
@@ -72,20 +63,9 @@ const MovieDetails = ({ route }) => {
             marginTop: 10,
           }}
         >
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              let title = movie.original_title.replace(/\s+/g, "+");
-              WebBrowser.openBrowserAsync(
-                "https://www.google.com/search?q=" + title + "+showtimes"
-              );
-            }}
-          >
-            <Text style={styles.buttonText}>Buy Tickets</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={favButton}>
+          <TouchableOpacity style={styles.button} onPress={handleSelect}>
             <Text style={styles.buttonText}>
-              {movie.title in favs ? "Unfavorite" : "Favorite"}
+              {movie.title in selectedMovs ? "Unselect" : "Select"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -96,13 +76,8 @@ const MovieDetails = ({ route }) => {
 
 const styles = StyleSheet.create({
   background: {
-<<<<<<< HEAD
-    backgroundColor: '#3D5A6C',
-    flexGrow: 1
-=======
     backgroundColor: "#3D5A6C",
     flexGrow: 1,
->>>>>>> dbe6f39a9a567d6517404ecd17649fd3d7d81807
   },
   container: {
     backgroundColor: "#FF7F7F",
@@ -161,5 +136,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-export default MovieDetails;

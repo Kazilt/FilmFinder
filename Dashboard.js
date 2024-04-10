@@ -1,40 +1,96 @@
-import {useState, createContext} from 'react';
-import { StyleSheet, View } from 'react-native';
-import {BottomNavigation } from 'react-native-paper';
-import Default from './Default';
-import NaviHome from './NaviHome';
+import { useContext, useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import { BottomNavigation } from "react-native-paper";
+import NaviHome from "./NaviHome";
 
-import { FavoriteContext } from './FavoriteContext';
-import UserProfile from './components/UserProfile';
+import UserProfile from "./components/UserProfile";
+import { AppContext, FavoritesContext, PollsContext } from "./AppContext";
+import Polling from "./components/polling/Polling";
+import { doc, getDoc } from "firebase/firestore";
 
 export default function Dashboard() {
-    const [index, setIndex] = useState(0);
-    const [routes] = useState([
-        { key: 'home', title: 'H', focusedIcon: 'home', unfocusedIcon: 'home-outline'},
-        { key: 'search', title: 'S', focusedIcon: 'card-search', unfocusedIcon: 'card-search-outline' },
-        { key: 'liked', title: 'L', focusedIcon: 'star-circle', unfocusedIcon: 'star-circle-outline' },
-        { key: 'profile', title: 'P', focusedIcon: 'account-circle', unfocusedIcon: 'account-circle-outline' },
-      ]);
-    
-      const renderScene = ({ route }) => {
-        switch (route.key) {
-          case 'home':
-            return <NaviHome type = "Home"/>;
-          case 'search':
-            return <NaviHome type = "Search"/>;
-          case 'liked':
-            return <NaviHome type = "Favorites"/>;
-          case 'profile':
-            return <UserProfile/>;
-          default:
-            return null;
-        }
-      };
-      const [favs, setFavs] = useState({})
+  const [index, setIndex] = useState(0);
+  appC = useContext(AppContext);
+  const [favs, setFavs] = useState({});
+  const cPoll = useState(null);
+  const [pollId, setPollId] = useState(null);
+  const selectedMovs = useState({});
+  const date = useState(null);
+  useEffect(() => {
+    const getFavs = async () => {
+      const userRef = doc(appC.db, "users", appC.user[0]);
+      ini_favs = (await getDoc(userRef)).data();
+      if ("favorites" in ini_favs) {
+        setFavs(ini_favs.favorites);
+      }
+    };
+    getFavs();
+  }, []);
 
-    return (
-      <FavoriteContext.Provider value={[favs, setFavs]}>
+  const favsContext = {
+    favs: [favs, setFavs],
+  };
+  const pollsContext = {
+    pollId: [pollId, setPollId],
+    selectedMovs: selectedMovs,
+    cPoll: cPoll,
+    date: date,
+  };
+  const [routes] = useState([
+    {
+      key: "home",
+      title: "H",
+      focusedIcon: "home",
+      unfocusedIcon: "home-outline",
+    },
+    {
+      key: "search",
+      title: "S",
+      focusedIcon: "card-search",
+      unfocusedIcon: "card-search-outline",
+    },
+    {
+      key: "liked",
+      title: "L",
+      focusedIcon: "star-circle",
+      unfocusedIcon: "star-circle-outline",
+    },
+    {
+      key: "poll",
+      title: "Po",
+      focusedIcon: "poll",
+      unfocusedIcon: "poll",
+    },
+    {
+      key: "profile",
+      title: "P",
+      focusedIcon: "account-circle",
+      unfocusedIcon: "account-circle-outline",
+    },
+  ]);
+
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      case "home":
+        return <NaviHome type="Home" />;
+      case "search":
+        return <NaviHome type="Search" />;
+      case "liked":
+        return <NaviHome type="Favorites" />;
+      case "profile":
+        return <UserProfile />;
+      case "poll":
+        return <Polling />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <FavoritesContext.Provider value={favsContext}>
+      <PollsContext.Provider value={pollsContext}>
         <BottomNavigation
+<<<<<<< HEAD
         navigationState={{ index, routes }}
         onIndexChange={setIndex}
         renderScene={renderScene}
@@ -54,3 +110,24 @@ const styles = StyleSheet.create({
     },
   });
   
+=======
+          navigationState={{ index, routes }}
+          onIndexChange={setIndex}
+          renderScene={renderScene}
+          labeled={false}
+          barStyle={{ backgroundColor: "#72A98F" }}
+        />
+      </PollsContext.Provider>
+    </FavoritesContext.Provider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#000",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+>>>>>>> dbe6f39a9a567d6517404ecd17649fd3d7d81807
