@@ -35,7 +35,7 @@ const Poll = ({ route }) => {
   const nav = useNavigation();
   const handleChoicePress = (selectedChoice) => {
     const appChoice = async () => {
-      ref = doc(db, "polls", pollID);
+      let ref = doc(db, "polls", pollID);
       nv = choices;
       nv[selectedChoice.id].votes += 1;
       setDoc(ref, {
@@ -47,6 +47,19 @@ const Poll = ({ route }) => {
       // const curr = await getDoc(uref)
 
       setDoc(uref, { pollID: pollID });
+
+      const votes_ref = doc(db, "stats", "votes");
+      let votes_snapshot = await getDoc(votes_ref);
+      var vote_data = {};
+      if (votes_snapshot.exists()) {
+        vote_data = votes_snapshot.data();
+      }
+      if (selectedChoice.choice in vote_data) {
+        vote_data[selectedChoice.choice] += 1;
+      } else {
+        vote_data[selectedChoice.choice] = 1;
+      }
+      setDoc(votes_ref, vote_data);
     };
     appChoice();
   };
