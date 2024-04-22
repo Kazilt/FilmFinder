@@ -53,6 +53,16 @@ export default function Login({ navigation }) {
         alert("Username or password cannot be empty.");
         return;
       }
+      if (
+        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(usernameValue)
+      ) {
+        alert("You have entered an invalid email address!");
+        return;
+      }
+      if (passwordValue.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return;
+      }
 
       // Check if username already exists
       const userRef = doc(db, "users", usernameValue);
@@ -75,7 +85,7 @@ export default function Login({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Welcome!</Text>
       <TextInput
-        label="Username"
+        label="Email Address"
         onChangeText={(text) => (username.current = text)}
         style={styles.input}
       />
