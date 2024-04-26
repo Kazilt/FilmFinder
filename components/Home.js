@@ -1,43 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, ScrollView, TouchableOpacity  } from 'react-native';
-import { Text } from 'react-native-paper';
-import { getData } from '../apicalls/apicalls';
-import MovieCard from './MovieCard';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
+import { Text } from "react-native-paper";
+import MovieCard from "./MovieCard";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { MoviesContext } from "../AppContext";
 
 export default function Home() {
-  
-  const [movieL, setMovieL] = useState([])
-  const nav = useNavigation()
-  useEffect(() => {
-    const fetchData = async () => {
-      let data = []
-      for (let i=1; i < 8; i += 1) {
-        data = data.concat(await getData(i))
-        
-      }
-      setMovieL(data);
-    };
-    fetchData();
-  }, []);
-
+  const movieL = useContext(MoviesContext).movies[0];
+  const nav = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
-      <Text style = {styles.textContent}>Movies showing that you might like:</Text>
+      <Text style={styles.textContent}>
+        Movies showing that you might like:
+      </Text>
       {movieL.length === 0 ? (
-          <Text style = {styles.textContent}>Loading...</Text>
-        ) : (
+        <Text style={styles.textContent}>Loading...</Text>
+      ) : (
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           {movieL.map((movie, i) => {
-            return (<TouchableOpacity key={i} onPress={() => nav.navigate('MovieDetails', { movie })}>
-            <MovieCard movie={movie} />
-          </TouchableOpacity>);
+            return (
+              <TouchableOpacity
+                key={i}
+                onPress={() => nav.navigate("MovieDetails", { movie })}
+              >
+                <MovieCard movie={movie} />
+              </TouchableOpacity>
+            );
           })}
-        </ScrollView>) 
-        }
-      
+        </ScrollView>
+      )}
+
       <StatusBar style="auto" />
     </SafeAreaView>
   );
@@ -46,21 +40,21 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#3D5A6C',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#3D5A6C",
+    alignItems: "center",
+    justifyContent: "center",
   },
   scrollViewContent: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     paddingHorizontal: 10,
   },
   textContent: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     padding: 10,
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF'
-  }
+    fontWeight: "bold",
+    color: "#FFF",
+  },
 });

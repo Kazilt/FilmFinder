@@ -8,79 +8,26 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Img_path } from "../apicalls/apicalls";
+import { Img_path } from "../../apicalls/apicalls";
 import { useNavigation } from "@react-navigation/native";
-import * as WebBrowser from "expo-web-browser";
-import { AppContext, FavoritesContext } from "../AppContext";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-const MovieDetails = ({ route }) => {
+import { FavoritesContext, PollsContext } from "../../AppContext";
+export const PollDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
   const nav = useNavigation();
-  const [favs, setFavs] = useContext(FavoritesContext).favs;
-  const appContext = useContext(AppContext);
-  const favButton = () => {
-    setFavs((prevFavs) => {
-      const handleUpdate = async (updated) => {
-        const userRef = doc(appContext.db, "users", appContext.user[0]);
+  const [selectedMovs, setSelectedMovs] = useContext(PollsContext).selectedMovs;
 
-        await updateDoc(userRef, { favorites: updated });
-      };
-      const updateStats = async (title, add) => {
-        const favRef = doc(appContext.db, "stats", "favorites");
-        let snap = await getDoc(favRef);
-        var data = {};
-        if (snap.exists()) {
-          data = snap.data();
-        }
-        if (title in data) {
-          if (add) {
-            data[title] += 1;
-          } else {
-            data[title] -= 1;
-            if (data[title] == 0) {
-              delete data[title];
-            }
-          }
-        } else {
-          data[title] = 1;
-        }
-        setDoc(favRef, data);
-      };
-      if (!(movie.title in prevFavs)) {
-        const updated = { ...prevFavs, [movie.title]: movie };
-        updateStats(movie.title, true);
-        handleUpdate(updated);
+  const handleSelect = () => {
+    setSelectedMovs((prevMovs) => {
+      if (!(movie.title in prevMovs)) {
+        const updated = { ...prevMovs, [movie.title]: true };
         return updated;
       } else {
-        const updatedFavs = { ...prevFavs };
+        const updatedFavs = { ...prevMovs };
         delete updatedFavs[movie.title];
-        updateStats(movie.title, false);
-        handleUpdate(updatedFavs);
         return updatedFavs;
       }
     });
-  };
-  const buyTickets = () => {
-    let title = movie.original_title.replace(/\s+/g, "+");
-    WebBrowser.openBrowserAsync(
-      "https://www.google.com/search?q=" + title + "+showtimes"
-    );
-    const addToStats = async () => {
-      const bref = doc(appContext.db, "stats", "bought");
-      let snapshot = await getDoc(bref);
-      var sdata = {};
-      if (snapshot.exists()) {
-        sdata = snapshot.data();
-      }
-      if (movie.original_title in sdata) {
-        sdata[movie.original_title] += 1;
-      } else {
-        sdata[movie.original_title] = 1;
-      }
-      setDoc(bref, sdata);
-    };
-    addToStats();
   };
   return (
     <SafeAreaView style={styles.background}>
@@ -116,12 +63,9 @@ const MovieDetails = ({ route }) => {
             marginTop: 10,
           }}
         >
-          <TouchableOpacity style={styles.button} onPress={buyTickets}>
-            <Text style={styles.buttonText}>Buy Tickets</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={favButton}>
+          <TouchableOpacity style={styles.button} onPress={handleSelect}>
             <Text style={styles.buttonText}>
-              {movie.title in favs ? "Unfavorite" : "Favorite"}
+              {movie.title in selectedMovs ? "Unselect" : "Select"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -192,5 +136,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-export default MovieDetails;
