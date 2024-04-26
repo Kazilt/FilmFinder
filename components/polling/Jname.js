@@ -27,9 +27,11 @@ export default function Jname({ navigation }) {
           try {
             const uref = doc(db, "users", uid, "voted", pollTitle);
             const data = await getDoc(uref);
-            let dat = data.data();
-            if (dat.pollID == pollTitle) {
-              beenVoted = true;
+            if (data.exists()) {
+              const dat = data.data();
+              if (dat.pollID == pollTitle) {
+                beenVoted = true;
+              }
             }
           } catch (error) {
             console.log(error);

@@ -12,7 +12,7 @@ import { Img_path } from "../apicalls/apicalls";
 import { useNavigation } from "@react-navigation/native";
 import * as WebBrowser from "expo-web-browser";
 import { AppContext, FavoritesContext } from "../AppContext";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 const MovieDetails = ({ route }) => {
   // Extracting the movie data from the route params
   const { movie } = route.params;
@@ -26,17 +26,61 @@ const MovieDetails = ({ route }) => {
 
         await updateDoc(userRef, { favorites: updated });
       };
+      const updateStats = async (title, add) => {
+        const favRef = doc(appContext.db, "stats", "favorites");
+        let snap = await getDoc(favRef);
+        var data = {};
+        if (snap.exists()) {
+          data = snap.data();
+        }
+        if (title in data) {
+          if (add) {
+            data[title] += 1;
+          } else {
+            data[title] -= 1;
+            if (data[title] == 0) {
+              delete data[title];
+            }
+          }
+        } else {
+          data[title] = 1;
+        }
+        setDoc(favRef, data);
+      };
       if (!(movie.title in prevFavs)) {
         const updated = { ...prevFavs, [movie.title]: movie };
+        updateStats(movie.title, true);
         handleUpdate(updated);
         return updated;
       } else {
         const updatedFavs = { ...prevFavs };
         delete updatedFavs[movie.title];
+        updateStats(movie.title, false);
         handleUpdate(updatedFavs);
         return updatedFavs;
       }
     });
+  };
+  const buyTickets = () => {
+    let title = movie.original_title.replace(/\s+/g, "+");
+    WebBrowser.openBrowserAsync(
+      "https://www.google.com/search?q=" + title + "+showtimes"
+    );
+    const addToStats = async () => {
+      const bref = doc(appContext.db, "stats", "bought");
+      let snapshot = await getDoc(bref);
+      var sdata = {};
+      if (snapshot.exists()) {
+        sdata = snapshot.data();
+      }
+      if (movie.original_title in sdata) {
+        sdata[movie.original_title] += 1;
+      } else {
+        sdata[movie.original_title] = 1;
+      }
+      setDoc(bref, sdata);
+    };
+    addToStats();
   };
   return (
     <SafeAreaView style={styles.background}>
@@ -72,15 +116,7 @@ const MovieDetails = ({ route }) => {
             marginTop: 10,
           }}
         >
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              let title = movie.original_title.replace(/\s+/g, "+");
-              WebBrowser.openBrowserAsync(
-                "https://www.google.com/search?q=" + title + "+showtimes"
-              );
-            }}
-          >
+          <TouchableOpacity style={styles.button} onPress={buyTickets}>
             <Text style={styles.buttonText}>Buy Tickets</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={favButton}>
