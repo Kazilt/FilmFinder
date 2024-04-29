@@ -94,7 +94,7 @@ export default function Dashboard() {
           onIndexChange={setIndex}
           renderScene={renderScene}
           labeled={true}
-          barStyle={{ backgroundColor: "#72A98F" }}
+          barStyle={{ backgroundColor: "#FF0000" }}
         />
       </PollsContext.Provider>
     </FavoritesContext.Provider>
@@ -104,8 +104,9 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "#000000",
     alignItems: "center",
     justifyContent: "center",
+    
   },
 });

@@ -132,7 +132,7 @@ const MovieDetails = ({ route }) => {
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: "#3D5A6C",
+    backgroundColor: "#000000",
     flexGrow: 1,
   },
   container: {
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     color: "#636363",
   },
   button: {
-    backgroundColor: "purple",
+    backgroundColor: "#e6aa68",
     padding: 15,
     borderRadius: 5,
     margin: 10,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   back_button: {
-    backgroundColor: "purple",
+    backgroundColor: "#e6aa68",
     padding: 10,
     borderRadius: 5,
     marginLeft: 10,

@@ -37,7 +37,7 @@ export default function Favorites({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3D5A6C",
+    backgroundColor: "#000000",
     alignItems: "center",
     justifyContent: "center",
   },

@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#3D5A6C",
+    backgroundColor: "#000000",
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#e6aa68",
     padding: 15,
     borderRadius: 10,
     marginBottom: 20,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#e6aa68",
     padding: 5,
     borderRadius: 20,
     position: "absolute",

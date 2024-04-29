@@ -14,7 +14,7 @@ const redTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#f8333c",
+    primary: "#ff0000",
     accent: "#ff0000",
   },
 };
@@ -27,7 +27,7 @@ const UserProfile = () => {
   const navRef = useContext(AppContext).navRef;
   return (
     <PaperProvider theme={redTheme}>
-      <View style={[styles.container, { backgroundColor: "#00000" }]}>
+      <View style={[styles.container, { backgroundColor: "#000000" }]}>
         <Text style={styles.loadingText}>Hello {user}!</Text>
         <Text style={styles.textContent}>Enter Card Info Here</Text>
         <TextInput
