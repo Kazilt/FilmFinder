@@ -39,31 +39,31 @@ export default function Dashboard() {
   const [routes] = useState([
     {
       key: "home",
-      title: "H",
+      title: "Home",
       focusedIcon: "home",
       unfocusedIcon: "home-outline",
     },
     {
       key: "search",
-      title: "S",
+      title: "Search",
       focusedIcon: "card-search",
       unfocusedIcon: "card-search-outline",
     },
     {
       key: "liked",
-      title: "L",
+      title: "Favorites",
       focusedIcon: "star-circle",
       unfocusedIcon: "star-circle-outline",
     },
     {
       key: "poll",
-      title: "Po",
+      title: "Poll",
       focusedIcon: "poll",
       unfocusedIcon: "poll",
     },
     {
       key: "profile",
-      title: "P",
+      title: "Profile",
       focusedIcon: "account-circle",
       unfocusedIcon: "account-circle-outline",
     },
@@ -93,7 +93,7 @@ export default function Dashboard() {
           navigationState={{ index, routes }}
           onIndexChange={setIndex}
           renderScene={renderScene}
-          labeled={false}
+          labeled={true}
           barStyle={{ backgroundColor: "#72A98F" }}
         />
       </PollsContext.Provider>
